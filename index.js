@@ -23,6 +23,7 @@ async function run() {
     await client.connect();
     //   console.log("mongodb connected")
     const serviceCollection = client.db("doctorDB").collection("services");
+    const appointmentCollection = client.db("doctorDB").collection("appointments");
 
     // Get all services
     // http://localhost:5000/service
@@ -31,6 +32,14 @@ async function run() {
       const cursor = serviceCollection.find(query);
       const services = await cursor.toArray();
       res.send(services);
+    });
+
+    // Post appointment
+    // http://localhost:5000/appointment
+    app.post("/appointment", async (req, res) => {
+      const appointment = req.body;
+      const result = await appointmentCollection.insertOne(data);
+      res.send(result);
     });
   } finally {
     //   await client.close();
