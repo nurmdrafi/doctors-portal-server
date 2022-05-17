@@ -36,10 +36,18 @@ async function run() {
 
     // Post appointment
     // http://localhost:5000/appointment
+    /* 
+    post method এর ভিতর query চালায় find করে সেই result এর উপর depend করে new item add হবে।
+    */
     app.post("/appointment", async (req, res) => {
       const appointment = req.body;
-      const result = await appointmentCollection.insertOne(data);
-      res.send(result);
+      const query = {treatment: appointment.treatment, date: appointment.date, patientName: appointment.patientName}
+      const exists = await appointmentCollection.findOne(query)
+      if(exists){
+        return res.send({success: false, appointment: exists})
+      }
+      const result = await appointmentCollection.insertOne(appointment);
+      res.send({success: true, result});
     });
   } finally {
     //   await client.close();
