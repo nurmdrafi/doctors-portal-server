@@ -51,7 +51,6 @@ async function run() {
       // step 2: get the booking of that day [2 x {}]
       const query = { date: date };
       const appointments = await appointmentCollection.find(query).toArray();
-      console.log(appointments)
       // step 3: for each service
       services.forEach((service) => {
         // step 4: filter which services are booked [2 x {}] from all services
